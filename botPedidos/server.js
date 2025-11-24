@@ -3,11 +3,19 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express'); 
 async function autenticarGoogle() {
-    const credenciais = JSON.parse(fs.readFileSync(path.join(__dirname, 'credentials.json')));
+    let credenciais;
+
+    if (fs.existsSync(path.join(__dirname, 'credentials.json'))) {
+        credenciais = JSON.parse(fs.readFileSync(path.join(__dirname, 'credentials.json')));
+    }else {
+        credenciais = JSON.parse(process.env.GOOGLE_CREDENTIALS || '{}');
+    }
+
     const auth = new google.auth.GoogleAuth({
         credentials: credenciais,
-        scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+        scopes: ['https://www.googleapis.com/auth/spreadsheets']
     });
+
     return auth;
 }
 
