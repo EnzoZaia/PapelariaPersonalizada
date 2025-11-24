@@ -1,1 +1,1 @@
-web: node server.js
+web: cd botPedidos && node server.js
