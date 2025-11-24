@@ -8,7 +8,10 @@ async function autenticarGoogle() {
     if (fs.existsSync(path.join(__dirname, 'credentials.json'))) {
         credenciais = JSON.parse(fs.readFileSync(path.join(__dirname, 'credentials.json')));
     }else {
-        credenciais = JSON.parse(process.env.GOOGLE_CREDENTIALS || '{}');
+        if(!process.env.GOOGLE_CREDENTIALS) {
+            throw new Error('GOOGLE_CREDENTIALS não está definida');
+        }
+        credenciais = JSON.parse(process.env.GOOGLE_CREDENTIALS);
     }
 
     const auth = new google.auth.GoogleAuth({
